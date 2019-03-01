@@ -25,6 +25,8 @@ namespace CustomKoctasPickInWatch
         private void Form1_Load(object sender, EventArgs e)
         {
             KameralariGetir();
+            axWindowsMediaPlayer1.URL = "C://1.mp4";
+            axWindowsMediaPlayer1.Ctlcontrols.stop();
         }
 
         public void KameralariGetir()
@@ -42,7 +44,7 @@ namespace CustomKoctasPickInWatch
         MotionDetector detector = new MotionDetector(
             new TwoFramesDifferenceDetector(),
             new BlobCountingObjectsProcessing()
-            { HighlightColor = Color.Red, MinObjectsHeight = 75, MinObjectsWidth = 75, HighlightMotionRegions = true });
+            { HighlightColor = Color.Red, MinObjectsHeight = 50, MinObjectsWidth = 50, HighlightMotionRegions = true });
 
         int SumX = 0;
         int SumY = 0;
@@ -51,7 +53,7 @@ namespace CustomKoctasPickInWatch
         {
             Bitmap image = (Bitmap)eventArgs.Frame.Clone();
 
-            detector.ProcessFrame(image);
+            if(detector.ProcessFrame(image) > 1)
                 pictureBox1.Image = image;
             pictureBox1.Image = image;
 
@@ -79,9 +81,37 @@ namespace CustomKoctasPickInWatch
             }
         }
 
+        int key = 1;
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             this.Text = SumX.ToString() + "------------" + SumY.ToString();
+
+            if (SumX < 300 && SumX > 1)
+            {
+                label1.Text = "B Reklamı";
+
+                if (key == 1 || key == 0)
+                {
+                    axWindowsMediaPlayer1.URL = "C://1.mp4";
+                    axWindowsMediaPlayer1.Ctlcontrols.stop();
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                    key = 2;
+                }
+            }
+            else if (SumX >= 300)
+            {
+                label1.Text = "A Reklamı";
+
+                if (key == 2 || key == 0)
+                {
+                    axWindowsMediaPlayer1.URL = "C://2.mp4";
+                    axWindowsMediaPlayer1.Ctlcontrols.stop();
+                    axWindowsMediaPlayer1.Ctlcontrols.play();
+                    key = 1;
+                }
+            }
+
         }
     }
 }
