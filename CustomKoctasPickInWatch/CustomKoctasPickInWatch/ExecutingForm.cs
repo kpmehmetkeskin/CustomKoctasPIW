@@ -15,27 +15,29 @@ using System.Windows.Forms;
 
 namespace CustomKoctasPickInWatch
 {
-    public partial class Form1 : Form
+    public partial class ExecutingForm : Form
     {
-        public Form1()
+        public ExecutingForm()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            KameralariGetir();
-            axWindowsMediaPlayer1.URL = "C://1.mp4";
+            InitializeCamera();
+            axWindowsMediaPlayer1.URL = "";
             axWindowsMediaPlayer1.Ctlcontrols.stop();
+            axWindowsMediaPlayer1.Width = this.Width;
+            axWindowsMediaPlayer1.Height = this.Height;
         }
 
-        public void KameralariGetir()
+        public void InitializeCamera()
         {
             VideoCaptureDevice FinalVideoSource;
             FilterInfoCollection VideoCaptuerDevices;
             VideoCaptuerDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
             FinalVideoSource = new VideoCaptureDevice(VideoCaptuerDevices[1].MonikerString);
-            FinalVideoSource.NewFrame += FinalVideoSource_NewFrame;
+            FinalVideoSource.NewFrame += FinalVideoSource_NewFrame2;
             FinalVideoSource.DesiredFrameRate = 500;
             FinalVideoSource.DesiredFrameSize = new Size(1, 500);
             FinalVideoSource.Start();
@@ -49,7 +51,7 @@ namespace CustomKoctasPickInWatch
         int SumX = 0;
         int SumY = 0;
 
-        private void FinalVideoSource_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        private void FinalVideoSource_NewFrame2(object sender, AForge.Video.NewFrameEventArgs eventArgs)
         {
             Bitmap image = (Bitmap)eventArgs.Frame.Clone();
 
@@ -76,41 +78,68 @@ namespace CustomKoctasPickInWatch
             }
             catch (Exception e)
             {
-                
+
                 Console.WriteLine(e.Message);
             }
         }
 
-        int key = 1;
+        private String currentVideo = "";
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            this.Text = SumX.ToString() + "------------" + SumY.ToString();
-
-            if (SumX < 300 && SumX > 1)
+            for (int i = 0; i < StaticVariables.objectBarcodeList.Count; i++)
             {
-                label1.Text = "B Reklamı";
+                int rectangleCount = StaticVariables.objectBarcodeList.Count;
+                int rectangleWidth = Constants.width / rectangleCount;
+                int rectangleXLocation = (i * rectangleWidth);
+                int rectangleXLocationWithWidth = rectangleXLocation + rectangleWidth;
 
-                if (key == 1 || key == 0)
+                if (SumX > rectangleXLocation && SumX <= rectangleXLocationWithWidth && !currentVideo.Equals(StaticVariables.objectBarcodeList[i].ToString()))
                 {
-                    axWindowsMediaPlayer1.URL = "C://1.mp4";
+                    currentVideo = currentVideo = StaticVariables.objectBarcodeList[i].ToString();
+                    axWindowsMediaPlayer1.URL = "C://PIWVideos//" + StaticVariables.objectBarcodeList[i].ToString() + ".mp4";
                     axWindowsMediaPlayer1.Ctlcontrols.stop();
                     axWindowsMediaPlayer1.Ctlcontrols.play();
-                    key = 2;
+                    axWindowsMediaPlayer1.Width = this.Width;
+                    axWindowsMediaPlayer1.Height = this.Height;
+                    break;
                 }
             }
-            else if (SumX >= 300)
-            {
-                label1.Text = "A Reklamı";
 
-                if (key == 2 || key == 0)
-                {
-                    axWindowsMediaPlayer1.URL = "C://2.mp4";
-                    axWindowsMediaPlayer1.Ctlcontrols.stop();
-                    axWindowsMediaPlayer1.Ctlcontrols.play();
-                    key = 1;
-                }
-            }
+
+
+
+
+
+
+
+
+            //this.Text = SumX.ToString() + "------------" + SumY.ToString();
+
+            //if (SumX < 300 && SumX > 1)
+            //{
+            //    label1.Text = "B Reklamı";
+
+            //    if (key == 1 || key == 0)
+            //    {
+            //        axWindowsMediaPlayer1.URL = "C://1.mp4";
+            //        axWindowsMediaPlayer1.Ctlcontrols.stop();
+            //        axWindowsMediaPlayer1.Ctlcontrols.play();
+            //        key = 2;
+            //    }
+            //}
+            //else if (SumX >= 300)
+            //{
+            //    label1.Text = "A Reklamı";
+
+            //    if (key == 2 || key == 0)
+            //    {
+            //        axWindowsMediaPlayer1.URL = "C://2.mp4";
+            //        axWindowsMediaPlayer1.Ctlcontrols.stop();
+            //        axWindowsMediaPlayer1.Ctlcontrols.play();
+            //        key = 1;
+            //    }
+            //}
 
         }
     }
