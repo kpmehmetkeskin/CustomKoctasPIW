@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CustomKoctasPickInWatch.DTO
 {
-    class RectangleDTO
+    public enum ProductStatus
     {
+        NOT_AVAILABLE = 0,
+        DOWNLOADING = 1,
+        AVAILABLE_ON_DISK = 2
     }
 }

@@ -87,17 +87,17 @@ namespace CustomKoctasPickInWatch
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < StaticVariables.objectBarcodeList.Count; i++)
+            for (int i = 0; i < StaticVariables.productDTOList.Count; i++)
             {
-                int rectangleCount = StaticVariables.objectBarcodeList.Count;
+                int rectangleCount = StaticVariables.productDTOList.Count;
                 int rectangleWidth = Constants.width / rectangleCount;
                 int rectangleXLocation = (i * rectangleWidth);
                 int rectangleXLocationWithWidth = rectangleXLocation + rectangleWidth;
 
-                if (SumX > rectangleXLocation && SumX <= rectangleXLocationWithWidth && !currentVideo.Equals(StaticVariables.objectBarcodeList[i].ToString()))
+                if (SumX > rectangleXLocation && SumX <= rectangleXLocationWithWidth && !currentVideo.Equals(StaticVariables.productDTOList[i].barcode))
                 {
-                    currentVideo = currentVideo = StaticVariables.objectBarcodeList[i].ToString();
-                    axWindowsMediaPlayer1.URL = "C://PIWVideos//" + StaticVariables.objectBarcodeList[i].ToString() + ".mp4";
+                    currentVideo = currentVideo = StaticVariables.productDTOList[i].barcode;
+                    axWindowsMediaPlayer1.URL = "C://PIWVideos//" + StaticVariables.productDTOList[i].barcode + ".mp4";
                     axWindowsMediaPlayer1.Ctlcontrols.stop();
                     axWindowsMediaPlayer1.Ctlcontrols.play();
                     axWindowsMediaPlayer1.Width = this.Width;

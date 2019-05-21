@@ -81,9 +81,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckVideoFromCDNService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CustomBarcodeReader.cs" />
-    <Compile Include="DTO\RectangleDTO.cs" />
+    <Compile Include="DownloadVideoService.cs" />
+    <Compile Include="DTO\ProductDTO.cs" />
+    <Compile Include="DTO\ProductStatus.cs" />
     <Compile Include="ExecutingForm.cs">
       <SubType>Form</SubType>
     </Compile>

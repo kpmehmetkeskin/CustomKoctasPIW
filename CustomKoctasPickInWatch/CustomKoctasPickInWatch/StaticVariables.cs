@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomKoctasPickInWatch.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,6 @@ namespace CustomKoctasPickInWatch
 {
     class StaticVariables
     {
-        public static List<String> objectBarcodeList = new List<String>();
-
-        
-
+        public static List<ProductDTO> productDTOList = new List<ProductDTO>();
     }
 }
